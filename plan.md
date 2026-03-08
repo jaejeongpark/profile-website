@@ -78,7 +78,7 @@ Now returning to industry — bringing both depth and execution.
 ```
 
 - 커리어 전환 스토리를 2~3줄로 압축
-- "Jazz & Classic 음악 애호가" 등 인간적 면모 한 줄 추가
+- 개인적 취미/관심사 등 사적 내용 일체 배제 — 직업적 역량과 경력만 표시
 
 ---
 
@@ -94,9 +94,11 @@ Now returning to industry — bringing both depth and execution.
 | Feb 2021 – Dec 2021 | **Hancom InSpace Co., Ltd.** | Assistant Researcher | MPC+GP path planning, navigation robot maintenance |
 | ── CAREER PIVOT: Optical Comm → AI & Robotics ── | | | |
 | Feb 2016 – Jul 2019 | **Licomm Co., Ltd.** | Research Engineer | SFP transceiver design, R-ONU, analog/digital circuitry (간략 표시) |
+| May 2015 – Jul 2015 | **Fottu Co., Ltd.** | Intern | BOSA temperature stress test (한 줄 최소 표시) |
+| Jun 2011 – Aug 2014 | **Opticis Co., Ltd.** | Intern | Fiber optic extension quality testing (한 줄 최소 표시) |
 
-> Licomm 이전 인턴십(Fottu, Opticis)은 EXPERIENCE 섹션에서 생략.
-> 필요 시 ABOUT 섹션 한 줄 언급 정도로 처리.
+> 광통신 시절(Licomm 포함) 경력은 완전히 삭제하지 않고 타임라인에 약하게 유지.
+> Licomm 이전 인턴십은 한 줄로 최소화하여 커리어 출발점만 표시.
 
 ---
 
@@ -195,7 +197,8 @@ HARDWARE (Background)
 ```
 // ESTABLISH CONNECTION
 
-jaejeonp@uci.edu                    [TODO: 개인 이메일 확인]
+jaejeonp@uci.edu
++82-10-8688-2773
 Republic of Korea
 
 [ LinkedIn ↗ ]    [ GitHub ↗ ]    [ Download CV ↗ ]
@@ -281,8 +284,8 @@ profile-website/
 > 아래 항목들을 준비해주시면 개발을 시작합니다.
 
 - [ ] **프로필 사진** (고해상도)
-- [ ] **이메일 주소** (웹사이트에 노출할 이메일)
-- [ ] **전화번호 노출 여부**
+- [x] **이메일**: jaejeonp@uci.edu 확정
+- [x] **전화번호**: +82-10-8688-2773 확정
 - [ ] **GitHub 계정 주소** (이미 연동됨: jaejeongpark)
 - [ ] **사이트 언어** (영어 단독 / 한영 병기)
 - [ ] **CV PDF** (UCI PhD + 논문 반영된 업데이트 버전)

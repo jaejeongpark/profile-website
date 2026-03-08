@@ -44,10 +44,15 @@
 - 학위 없이도 PhD 레벨의 연구 역량을 보유한 엔지니어로 포지셔닝
 - EDUCATION 섹션에는 "Doctoral Researcher (Oct 2023 – Jan 2026)" 또는 "Ph.D. Candidate" 표기
 
-### 2.3 Licomm 이전 경력 처리
-- Licomm(광통신) **이전** 인턴십(Fottu, Opticis)은 웹사이트에서 **생략 또는 최소화**
-- Licomm은 "커리어 전환의 출발점"으로만 간략히 언급
+### 2.3 광통신 시절 경력 처리
+- 광통신 경력(Licomm, Fottu, Opticis)은 완전히 삭제하지 않고 타임라인에 **약하게 유지**
+- Licomm: 간략한 업무 설명 한 줄 수준으로 표시 (커리어 전환점 강조)
+- Fottu, Opticis 인턴십: 한 줄 최소 표시로 커리어 출발 맥락만 제공
 - 메인 포커스: **Hancom InSpace → Dextech → Pablo Air → UC Irvine PhD**
+
+### 2.4 콘텐츠 원칙
+- **이직 목적에만 집중**: 취미, 음악, 개인적 관심사 등 사적 내용 일체 배제
+- 모든 콘텐츠는 직업적 역량, 기술, 경력, 연구 성과로만 구성
 
 ---
 
@@ -57,6 +62,7 @@
 |------|------|
 | 이름 | Jaejeong Park (박재정) |
 | 이메일 | jaejeonp@uci.edu |
+| 전화번호 | +82-10-8688-2773 |
 | LinkedIn | https://www.linkedin.com/in/jaejeong-park-81ba5ba4/ |
 | 위치 | Republic of Korea |
 | 학위 | BS/MS EE @ University at Buffalo (Magna Cum Laude) |
@@ -153,8 +159,8 @@ index.html (SPA)
 ## 9. 미확인 정보 (개발 전 사용자 확인 필요)
 
 - [ ] 프로필 사진
-- [ ] 연락처 이메일 (UCI 이메일 vs 개인 이메일)
-- [ ] 전화번호 노출 여부
+- [x] 이메일: jaejeonp@uci.edu 확정
+- [x] 전화번호: +82-10-8688-2773 확정
 - [ ] GitHub Pages 커스텀 도메인 여부
 - [ ] 한국어/영어 중 사이트 언어 선택
 - [ ] 다운로드용 CV PDF 업데이트 버전
