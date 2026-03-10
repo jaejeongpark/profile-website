@@ -85,14 +85,39 @@
     .footer-logo { font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); letter-spacing: 2px; }
     .footer-logo span { color: var(--cyan); }
 
+    /* ── Language Toggle (fixed top-left) ────────────────── */
+    .detail-lang {
+      position: fixed; top: 20px; left: 28px; z-index: 1000;
+      display: flex; align-items: stretch;
+      background: rgba(4, 8, 16, 0.88); backdrop-filter: blur(12px);
+      border: 1px solid var(--border); border-radius: 2px;
+    }
+    .detail-lang-btn {
+      font-family: var(--font-mono); font-size: 11px; letter-spacing: 1.5px;
+      color: var(--text-secondary); background: transparent; border: none;
+      padding: 8px 14px; cursor: pointer;
+      transition: color var(--transition), background var(--transition);
+    }
+    .detail-lang-btn.active { color: var(--cyan); background: rgba(0, 212, 255, 0.08); }
+    .detail-lang-btn:hover { color: var(--cyan); }
+    .detail-lang-divider { width: 1px; background: var(--border); }
+
     @media (max-width: 600px) {
       .detail-page { padding: 88px 20px 60px; }
       .media-grid-2 { grid-template-columns: 1fr; }
       .back-btn { right: 16px; top: 14px; }
+      .detail-lang { left: 16px; top: 14px; }
     }
   </style>
 </head>
 <body>
+
+  <!-- ── Language Toggle ────────────────────────────────── -->
+  <div class="detail-lang" role="group" aria-label="Language selector">
+    <button class="detail-lang-btn" data-lang="en">EN</button>
+    <div class="detail-lang-divider"></div>
+    <button class="detail-lang-btn" data-lang="ko">KO</button>
+  </div>
 
   <a class="back-btn" href="../index.html#projects" aria-label="Back to portfolio">
     <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
@@ -278,11 +303,21 @@
 
   <script>
     (function () {
-      const saved = localStorage.getItem('lang') || 'en';
-      document.querySelectorAll('[data-en],[data-ko]').forEach(el => {
-        const val = el.getAttribute('data-' + saved);
-        if (val) el.textContent = val;
+      function applyLang(l) {
+        localStorage.setItem('lang', l);
+        document.querySelectorAll('[data-en],[data-ko]').forEach(function(el) {
+          var val = el.getAttribute('data-' + l);
+          if (!val) return;
+          if (/<[a-z]/i.test(val)) { el.innerHTML = val; } else { el.textContent = val; }
+        });
+        document.querySelectorAll('.detail-lang-btn').forEach(function(btn) {
+          btn.classList.toggle('active', btn.getAttribute('data-lang') === l);
+        });
+      }
+      document.querySelectorAll('.detail-lang-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() { applyLang(btn.getAttribute('data-lang')); });
       });
+      applyLang(localStorage.getItem('lang') || 'en');
     })();
   </script>
 </body>

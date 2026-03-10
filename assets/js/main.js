@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function setLang(lang) {
     currentLang = lang;
+    localStorage.setItem('lang', lang);
     document.querySelectorAll('[data-en]').forEach(el => {
       const val = el.getAttribute('data-' + lang) || el.getAttribute('data-en');
       // Use innerHTML if the value contains HTML tags
@@ -32,8 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('click', () => setLang(btn.dataset.lang));
   });
 
-  // Initialize English by default
-  setLang('en');
+  // Initialize from saved preference, default English
+  setLang(localStorage.getItem('lang') || 'en');
 
 
   /* ── Nav Scroll Spy ──────────────────────────────────────── */
