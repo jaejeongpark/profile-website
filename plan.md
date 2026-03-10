@@ -1,5 +1,5 @@
 # plan.md — Portfolio Website 개발 계획서
-> Jaejeong Park | 버전: v2.1 | 최종 수정: 2026-03-10
+> Jaejeong Park | 버전: v2.2 | 최종 수정: 2026-03-10
 
 ---
 
@@ -63,13 +63,13 @@ index.html (SPA)
 ├── PUBLICATIONS — 논문 카드
 └── CONTACT      — 연락처
 
-projects/                      — 프로젝트 상세 페이지 (신규)
-├── uam-motion-planning.html
-├── maritime-delivery.html
-├── inspection-drone.html
-├── precision-landing.html
-├── mpc-gp-pathplanning.html
-└── visual-navigation.html
+projects/                      — 프로젝트 상세 페이지
+├── maritime-delivery.html      ✅ 완료
+├── inspection-drone.html       ✅ 완료
+├── precision-landing.html      ✅ 완료
+├── mpc-gp-pathplanning.html    ✅ 완료
+├── visual-navigation.html      ✅ 완료
+└── uam-motion-planning.html    ⬜ 미완료
 ```
 
 ---
@@ -127,11 +127,11 @@ projects/                      — 프로젝트 상세 페이지 (신규)
 | 회사 | 기간 | 프로젝트 카드 | 카드 대표 미디어 |
 |------|------|--------------|----------------|
 | UC Irvine | 2023–2026 | Noise-Aware UAM Motion Planning | 영상 없음 → arXiv 논문 링크 카드 |
-| Pablo Air | 2022–2023 | Maritime Ship Autonomous Delivery | `선용품_small.mp4` |
-| Dextech | 2022 | Inspection Drone | `inspection drone project.mp4` |
-| Dextech | 2022 | Precision Landing | `01 - gazebo시점_small.mp4` |
-| Hancom InSpace | 2021 | MPC + GP Path Planning | `04 - 주행테스트.mp4` |
-| Hancom InSpace | 2021 | Visual Navigation | `07 - visual navigation.mp4` |
+| Pablo Air | 2022–2023 | Maritime Ship Autonomous Delivery | `Maritime_Ship_Delivery_main.mp4` |
+| Dextech | 2022 | Inspection Drone | `inspection drone project.mp4` (`data-start="2.5"`) |
+| Dextech | 2022 | Precision Landing | `01 - gazebo시점_small.mp4` → `01 - gazebo시점_small.mp4` |
+| Hancom InSpace | 2021 | MPC + GP Path Planning | `main.mp4` (구: `04 - 주행테스트.mp4`) |
+| Hancom InSpace | 2021 | Visual Navigation | `04_pointcloud.mp4` (구: `07 - visual navigation.mp4`) |
 
 > **Licomm / Fottu / Opticis**: 프로젝트 카드 없이 경력 텍스트만 (dimmed 처리 유지, 기존과 동일)
 
@@ -171,18 +171,33 @@ projects/                      — 프로젝트 상세 페이지 (신규)
 
 ## 5. 프로젝트 상세 페이지 (projects/*.html)
 
-index.html과 동일한 nav 공유.
-Back 버튼 → `../index.html#work` 앵커로 복귀.
+index.html의 nav를 공유하지 않음 — standalone 페이지.
+**실제 구현**: 좌상단 고정 EN/KO 토글 + 우상단 고정 BACK 버튼 (`../index.html#projects`).
 
-### 공통 페이지 레이아웃:
+### 공통 페이지 레이아웃 (실제 구현):
 ```
-NAV (공통)
-├── HERO 영역         — 프로젝트명 + 회사/기간 + 한 줄 요약 + Back 버튼
-├── OVERVIEW          — 프로젝트 배경, 목표, 본인 역할
-├── MEDIA GALLERY     — 영상(들) + 이미지 그리드
-├── TECH DETAILS      — 사용 기술 / 접근 방법 상세
-├── KEY RESULTS       — 주요 결과 / 성과
-└── FOOTER (공통)
+[EN | KO]  (좌상단 고정)          [← BACK]  (우상단 고정)
+├── HEADER    — detail-label (// Project Detail), 제목, subtitle, meta-tags
+├── DIVIDER
+├── SECTION × N  — section-label, section-heading, section-body, media-block
+│                   └── tech-highlight (기술 스택 박스)
+└── FOOTER    — JP.sys 로고 + ← BACK TO PORTFOLIO 링크
+```
+
+**공통 CSS 패턴** (모든 detail 페이지 inline `<style>`):
+- `.detail-lang` — 좌상단 고정 EN/KO 토글
+- `.back-btn` — 우상단 고정 BACK 버튼
+- `.media-frame::after` — HUD 코너 브래킷 (상세 페이지에만 유지)
+- `.tech-highlight` — cyan 좌측 보더 기술 스택 박스
+
+**공통 언어 스크립트** (모든 detail 페이지 inline `<script>`):
+```js
+applyLang(l) {
+  localStorage.setItem('lang', l);
+  querySelectorAll('[data-en],[data-ko]') → textContent or innerHTML
+  .detail-lang-btn → active 클래스 토글
+}
+applyLang(localStorage.getItem('lang') || 'en');
 ```
 
 ### 페이지별 미디어 자산 목록:
@@ -191,34 +206,34 @@ NAV (공통)
 - 미디어: 없음 → arXiv 논문 임베드 및 링크 강조
 - 내용: Abstract, 핵심 기여 (MNN, RRT*, noise constraint), 아키텍처 설명
 
-**02. maritime-delivery.html** (Pablo Air, 2022–2023)
-- 영상: `선용품_small.mp4`, `Pathplanning vid.mp4`, `pg_2.mp4`, `pg_3.mp4`
-- 이미지: `pg_1.png`, `pg_3.png`, `pg_4.png`, `Ship_detection.png`, `Pathplanning.gif`
-- 카드 대표: `선용품_small.mp4`
+**01. uam-motion-planning.html** (UC Irvine, 2023–2025) ⬜ 미완료
+- 미디어: 없음 → arXiv 논문 임베드 및 링크 강조
+- 내용: Abstract, 핵심 기여 (MNN, RRT*, noise constraint), 아키텍처 설명
 
-**03. inspection-drone.html** (Dextech, 2022)
-- 영상: `inspection drone project.mp4`
-- 이미지: `2D_3D Mapping_3.png`, `keypoint extraction.png`, `keypoint matching_2.png`,
-          `Plane_Drone_model.png`, `Plane Scanning.png`, `Simulation_Gazebo_5.png`,
-          `Simulation Result_6.png`, `Simulation Result.png`, `Whole View_4.png`
-- 카드 대표: `inspection drone project.mp4`
+**02. maritime-delivery.html** (Pablo Air, 2022–2023) ✅ 완료
+- 영상(assets/projects/maritime/): `Maritime_Ship_Delivery_main.mp4`(카드), `maritime delivery drone sim.mp4`, `tech_point_2.mp4`, `tech_point_3.mp4`
+- 이미지: `tech_point_1.png`, `tech_point_3-1.png`, `tech_point_3-2.png`
+- 섹션: Overview(시뮬) / Ship Detection(YOLO+CSRT) / Visual Odometry / Precision Landing(PnP)
 
-**04. precision-landing.html** (Dextech, 2022)
-- 영상: `01 - gazebo시점_small.mp4`, `02 - 드론시점_small.mp4`, `03 - ship_recognition small.mkv`
+**03. inspection-drone.html** (Dextech, 2022) ✅ 완료
+- 영상(assets/projects/inspection/): `inspection drone project.mp4` (카드, `data-start="2.5"`)
+- 이미지: `pg_1.png`~`pg_6.png`
+- 섹션: Overview / SIFT추출(pg_1) / 키포인트매칭(pg_2) / 2D-3D매핑(pg_3) / 아키텍처(pg_4) / Gazebo결과(pg_5,6)
+
+**04. precision-landing.html** (Dextech, 2022) ✅ 완료
+- 영상(assets/projects/precision-landing/): `01 - gazebo시점_small.mp4`(카드), `02 - 드론시점_small.mp4`, `03 - ship_recognition small.mkv`
 - 이미지: `landing_target.png`
-- 카드 대표: `01 - gazebo시점_small.mp4`
+- 섹션: Overview / 드론시점 / YOLO탐지 / 착륙타겟+PnP
 
-**05. mpc-gp-pathplanning.html** (Hancom InSpace, 2021)
-- 영상: `04 - 주행테스트.mp4`, `05 - simulation 결과.mp4`
-- 이미지: `step_1.png`, `step_2.png`, `step_3.png`, `step_4.png`, `track.jpg`
-- 카드 대표: `04 - 주행테스트.mp4`
+**05. mpc-gp-pathplanning.html** (Hancom InSpace, 2021) ✅ 완료
+- 영상(assets/projects/mpc-gp/): `main.mp4`(카드), `driving_test.mp4`
+- 이미지: `step_1.png`~`step_4.png`, `track.jpg`
+- 섹션: Overview+시뮬결과 / Step1(환경) / Step2(GP모델링) / Step3(MPC최적화) / Step4(폐루프결과)
 
-**06. visual-navigation.html** (Hancom InSpace, 2021)
-- 영상: `07 - visual navigation.mp4`, `01 - pointcloud2_trim_small.mp4`,
-        `02 - PointCloud_small.mp4`, `03 - disparity_heatmap_small.mp4`,
-        `04 - Image_rect_small.mp4`, `05 - Stereo_img.mp4`, `08 - octomap_누적.webm`
+**06. visual-navigation.html** (Hancom InSpace, 2021) ✅ 완료
+- 영상(assets/projects/visual-nav/): `04_pointcloud.mp4`(카드), `01_stereo.mp4`, `02_image_rect.mp4`, `03_disparity.mp4`, `05_pointcloud2.mp4`, `08_octomap.webm`, `whole.mp4`
 - 이미지: `camera.png`
-- 카드 대표: `07 - visual navigation.mp4`
+- 섹션: 스테레오입력 / 정류 / 시차맵 / 포인트클라우드 / 필터링
 
 ---
 
@@ -340,20 +355,28 @@ profile-website/
 - assets/projects/maritime/, inspection/, precision-landing/, mpc-gp/, visual-nav/ 미디어 복사 완료
 - inspection drone 카드: `data-start="2.5"` + `loadedmetadata` 정적 프리뷰 프레임 고정 적용
 
+### 완료된 항목
+- index.html (SPA) 전 섹션 (HERO/ABOUT/WORK/SKILLS/EDUCATION/PUBLICATIONS/CONTACT)
+- KO/EN 토글 (index: main.js, localStorage 저장/복원)
+- 프로젝트 카드 hover 영상 재생 (`data-start` 지원, `loadedmetadata` 정적 프리뷰 고정)
+- 5개 상세 페이지 (maritime/inspection/precision/mpc-gp/visual-nav) + EN/KO 토글 탭
+- 언어 상태 localStorage 영속화 — 페이지 간 이동 시 유지
+
 ### 미완료 항목
-- projects/uam-motion-planning.html
 - projects/uam-motion-planning.html
 - CV PDF (cv/jaejeong_park_cv.pdf)
 - 커스텀 도메인 설정
-- GitHub Pages 배포
+- GitHub Pages 최종 배포 확인
 
-### 실제 구현과 plan 간 차이점
-| 항목 | plan | 실제 구현 |
-|------|------|---------|
+### 실제 구현과 원래 plan 간 차이점
+| 항목 | 원래 plan | 실제 구현 |
+|------|----------|---------|
+| 상세 페이지 nav | index.html nav 공유 | standalone (lang토글+BACK버튼만) |
 | Back 버튼 앵커 | `#work` | `#projects` |
 | hover JS 위치 | main.js | index.html 인라인 script |
-| inspection drone 시작 시점 | 0초 | 2.5초 (`data-start="2.5"`, 정적 프리뷰도 동일 프레임) |
-| MPC 카드 대표 영상 | `04 - 주행테스트.mp4` | `main (simulation 결과).mp4` → `main.mp4` |
-| Visual nav 카드 대표 영상 | `07 - visual navigation.mp4` | `04 (PointCloud_small).mp4` → `04_pointcloud.mp4` |
+| lang 저장 | 미구현 | `localStorage` (main.js + detail pages) |
+| inspection drone 시작 시점 | 0초 | 2.5초 (`data-start="2.5"`) |
+| MPC 카드 대표 영상 | `04 - 주행테스트.mp4` | `main.mp4` |
+| Visual nav 카드 대표 영상 | `07 - visual navigation.mp4` | `04_pointcloud.mp4` |
 
-*plan.md v2.1 | 2026-03-10*
+*plan.md v2.2 | 2026-03-10*

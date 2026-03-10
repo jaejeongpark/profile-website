@@ -92,15 +92,30 @@ Topic  : eVTOL noise-aware motion planning, Certified ML, Monotonic NN, RRT*
 - **Vanilla HTML5 / CSS3 / JavaScript** — 프레임워크 없음
 - **외부 CDN**: Google Fonts만 허용 (Bebas Neue, JetBrains Mono, Barlow)
 - **배포**: GitHub Pages — https://jaejeongpark.github.io
-- **단일 페이지 애플리케이션 (SPA)**
-- **다국어**: 한영 병기, JS로 구현한 KO/EN 토글 (data-ko / data-en 속성 방식)
+- **단일 페이지 애플리케이션 (SPA)** + 프로젝트 상세 standalone 페이지 (projects/*.html)
+- **다국어**: 한영 병기, JS로 구현한 KO/EN 토글 (`data-ko` / `data-en` 속성 방식)
+  - index.html: `assets/js/main.js`의 `setLang()` — `localStorage`에 저장
+  - detail pages: inline script `applyLang()` — `localStorage` 읽기/쓰기 + 버튼 active 상태
+  - 언어 선택은 페이지 간 이동 시 `localStorage`를 통해 유지됨
 
 ---
 
 ## 6. 디자인 시스템
 
-### 콘셉트: "Terminal meets Aerospace"
-드론/UAM 연구자의 정체성을 담은 다크 테크 포트폴리오
+### 콘셉트: "Clean Dark Professional" (v2 — v1에서 변경)
+절제된 고급 다크 디자인. Linear/Vercel 계열의 clean dark. 레퍼런스: 타이포그래피·여백 중심.
+
+### v1 → v2 변경 (이미 적용 완료)
+| UI 요소 | v1 | v2 현재 |
+|--------|----|----|
+| 스캔라인 오버레이 | ✅ | ❌ 제거 |
+| HUD 프레임 (index) | ✅ | ❌ 제거 |
+| 글리치 hover | ✅ | ❌ 제거 |
+| 커스텀 십자선 커서 | ✅ | ❌ 제거 |
+| 타이핑 애니메이션 | ✅ | ✅ 유지 |
+| HUD 코너 브래킷 | — | ✅ **detail 페이지 media-frame에만** 유지 |
+| Skills 프로그레스바 | ✅ | ✅ 유지 |
+| Education log 스타일 | ✅ | ✅ 유지 |
 
 ### 컬러
 ```css
@@ -120,12 +135,11 @@ Topic  : eVTOL noise-aware motion planning, Certified ML, Monotonic NN, RRT*
 - Mono: `JetBrains Mono` — 코드, 레이블, 메타정보
 - Body: `Barlow` — 본문, 설명
 
-### 시그니처 UI
-- 스캔라인 오버레이 (CRT 스타일)
-- HUD 프레임 (모서리 브래킷)
+### 현재 유지되는 시그니처 UI
 - 타이핑 애니메이션 (히어로)
-- 커스텀 커서 (십자선)
-- 글리치 hover 효과
+- HUD 코너 브래킷 — detail 페이지의 `.media-frame::after`에만 적용
+- tech-highlight box (cyan 좌측 보더)
+- fade-in 등장 애니메이션 (Intersection Observer)
 
 ---
 
