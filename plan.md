@@ -296,9 +296,9 @@ profile-website/
 - [x] maritime-delivery.html — 완료 (Pablo Air)
 - [x] inspection-drone.html — 완료 (Dextech, 6섹션: Overview/SIFT추출/매칭/2D-3D매핑/아키텍처/Gazebo결과)
 - [x] precision-landing.html — 완료 (Dextech, 4섹션: Overview/드론시점/YOLO탐지/착륙타겟+PnP)
+- [x] mpc-gp-pathplanning.html — 완료 (Hancom, 5섹션: Overview+시뮬결과/Step1~4)
+- [x] visual-navigation.html — 완료 (Hancom, 5섹션: 스테레오입력/정류/시차맵/포인트클라우드/필터링)
 - [ ] uam-motion-planning.html — 미완료
-- [ ] mpc-gp-pathplanning.html — 미완료
-- [ ] visual-navigation.html — 미완료
 - 참고: Back 버튼은 `../index.html#projects`로 구현됨 (plan의 `#work`와 다름)
 
 ### STEP 6 — 반응형 조정 (responsive.css)
@@ -335,13 +335,14 @@ profile-website/
 - projects/maritime-delivery.html — 완료
 - projects/inspection-drone.html — 완료
 - projects/precision-landing.html — 완료
-- assets/projects/maritime/, inspection/, precision-landing/ 미디어 복사 완료
+- projects/mpc-gp-pathplanning.html — 완료
+- projects/visual-navigation.html — 완료
+- assets/projects/maritime/, inspection/, precision-landing/, mpc-gp/, visual-nav/ 미디어 복사 완료
+- inspection drone 카드: `data-start="2.5"` + `loadedmetadata` 정적 프리뷰 프레임 고정 적용
 
 ### 미완료 항목
 - projects/uam-motion-planning.html
-- projects/mpc-gp-pathplanning.html
-- projects/visual-navigation.html
-- assets/projects/mpc-gp/, visual-nav/ 미디어 복사
+- projects/uam-motion-planning.html
 - CV PDF (cv/jaejeong_park_cv.pdf)
 - 커스텀 도메인 설정
 - GitHub Pages 배포
@@ -351,6 +352,8 @@ profile-website/
 |------|------|---------|
 | Back 버튼 앵커 | `#work` | `#projects` |
 | hover JS 위치 | main.js | index.html 인라인 script |
-| inspection drone 시작 시점 | 0초 | 2.5초 (`data-start="2.5"`) |
+| inspection drone 시작 시점 | 0초 | 2.5초 (`data-start="2.5"`, 정적 프리뷰도 동일 프레임) |
+| MPC 카드 대표 영상 | `04 - 주행테스트.mp4` | `main (simulation 결과).mp4` → `main.mp4` |
+| Visual nav 카드 대표 영상 | `07 - visual navigation.mp4` | `04 (PointCloud_small).mp4` → `04_pointcloud.mp4` |
 
 *plan.md v2.1 | 2026-03-10*

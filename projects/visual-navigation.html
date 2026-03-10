@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Visual Navigation — Jaejeong Park Project Detail" />
+  <title>Visual Navigation — Jaejeong Park</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg-primary:    #040810;
+      --bg-secondary:  #070e1a;
+      --bg-card:       #0a1525;
+      --cyan:          #00D4FF;
+      --amber:         #FFB300;
+      --green:         #00FF88;
+      --text-primary:  #E8F4F8;
+      --text-secondary:#6B8FA8;
+      --border:        rgba(0, 212, 255, 0.2);
+      --font-display:  'Bebas Neue', sans-serif;
+      --font-mono:     'JetBrains Mono', monospace;
+      --font-body:     'Barlow', sans-serif;
+      --transition:    0.3s ease;
+      --content-max:   860px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body { background: var(--bg-primary); color: var(--text-primary); font-family: var(--font-body); font-weight: 300; line-height: 1.7; overflow-x: hidden; }
+    a { color: var(--cyan); text-decoration: none; transition: color var(--transition); }
+    a:hover { color: #fff; }
+    img, video { max-width: 100%; display: block; }
+    ::selection { background: rgba(0, 212, 255, 0.3); color: #fff; }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg-secondary); }
+    ::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 2px; }
+
+    .back-btn {
+      position: fixed; top: 20px; right: 28px; z-index: 1000;
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 18px;
+      background: rgba(4, 8, 16, 0.88); backdrop-filter: blur(12px);
+      border: 1px solid var(--border); border-radius: 2px;
+      font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary);
+      letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer;
+      transition: border-color var(--transition), color var(--transition), background var(--transition);
+    }
+    .back-btn:hover { border-color: var(--cyan); color: var(--cyan); background: rgba(0, 212, 255, 0.05); }
+    .back-btn svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+
+    .detail-page { max-width: var(--content-max); margin: 0 auto; padding: 100px 32px 80px; }
+
+    .detail-label { font-family: var(--font-mono); font-size: 11px; color: var(--cyan); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+    .detail-title { font-family: var(--font-display); font-size: clamp(2rem, 6vw, 3.4rem); color: var(--text-primary); letter-spacing: 2px; line-height: 1.1; margin-bottom: 16px; }
+    .detail-subtitle { font-size: 1rem; color: var(--text-secondary); margin-bottom: 28px; }
+    .detail-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 40px; }
+    .meta-tag { font-family: var(--font-mono); font-size: 10px; color: var(--cyan); border: 1px solid var(--border); padding: 4px 10px; letter-spacing: 1px; text-transform: uppercase; }
+    .meta-tag.amber { color: var(--amber); border-color: rgba(255, 179, 0, 0.3); }
+    .detail-divider { width: 100%; height: 1px; background: var(--border); margin-bottom: 48px; }
+
+    .detail-section { margin-bottom: 64px; }
+    .section-label { font-family: var(--font-mono); font-size: 10px; color: var(--cyan); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+    .section-heading { font-family: var(--font-display); font-size: 1.5rem; color: var(--text-primary); letter-spacing: 1.5px; margin-bottom: 20px; }
+    .section-body { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.8; }
+    .section-body p + p { margin-top: 14px; }
+
+    .media-block { margin-bottom: 48px; }
+    .media-frame { position: relative; border: 1px solid var(--border); border-radius: 2px; overflow: hidden; background: var(--bg-card); }
+    .media-frame::before { content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 1; box-shadow: inset 0 0 0 1px rgba(0, 212, 255, 0.08); }
+    .media-frame video, .media-frame img { width: 100%; display: block; }
+    .media-frame::after { content: ''; position: absolute; top: 6px; left: 6px; width: 14px; height: 14px; border-top: 1px solid var(--cyan); border-left: 1px solid var(--cyan); pointer-events: none; z-index: 2; }
+    .media-caption { margin-top: 12px; font-family: var(--font-mono); font-size: 10px; color: var(--text-secondary); letter-spacing: 1px; display: flex; align-items: flex-start; gap: 8px; }
+    .media-caption::before { content: '//'; color: var(--cyan); flex-shrink: 0; }
+
+    .media-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    .tech-highlight { background: var(--bg-card); border: 1px solid var(--border); border-left: 3px solid var(--cyan); padding: 20px 24px; margin-top: 24px; font-family: var(--font-mono); font-size: 0.82rem; color: var(--text-secondary); line-height: 1.7; }
+    .tech-highlight strong { color: var(--cyan); display: block; margin-bottom: 6px; font-size: 0.78rem; letter-spacing: 1px; text-transform: uppercase; }
+
+    .detail-footer { border-top: 1px solid var(--border); padding-top: 32px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    .footer-logo { font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); letter-spacing: 2px; }
+    .footer-logo span { color: var(--cyan); }
+
+    @media (max-width: 600px) {
+      .detail-page { padding: 88px 20px 60px; }
+      .media-grid-2 { grid-template-columns: 1fr; }
+      .back-btn { right: 16px; top: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <a class="back-btn" href="../index.html#projects" aria-label="Back to portfolio">
+    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    <span data-en="BACK" data-ko="돌아가기">BACK</span>
+  </a>
+
+  <main class="detail-page">
+
+    <p class="detail-label">// Project Detail — Hancom InSpace Co., Ltd. · Feb 2021 – Dec 2021</p>
+    <h1 class="detail-title">Visual Navigation<br>& Sensor Fusion</h1>
+    <p class="detail-subtitle"
+       data-en="Stereo camera-based visual perception pipeline for terrain-relative navigation — producing rectified imagery, disparity maps, and dense 3D point clouds to support autonomous localization in GPS-denied environments."
+       data-ko="지형 상대 내비게이션을 위한 스테레오 카메라 기반 비주얼 인식 파이프라인 — GPS 불가 환경에서 자율 위치 추정을 지원하는 정류 영상, 시차 맵, 밀집 3D 포인트 클라우드 생성.">
+      Stereo camera-based visual perception pipeline for terrain-relative navigation — producing rectified imagery, disparity maps, and dense 3D point clouds to support autonomous localization in GPS-denied environments.
+    </p>
+    <div class="detail-meta">
+      <span class="meta-tag">Stereo Vision</span>
+      <span class="meta-tag">Point Cloud</span>
+      <span class="meta-tag">Disparity</span>
+      <span class="meta-tag">Sensor Fusion</span>
+      <span class="meta-tag">ROS</span>
+      <span class="meta-tag amber">Hancom InSpace · 2021</span>
+    </div>
+    <div class="detail-divider"></div>
+
+    <!-- ── Section 1: Stereo Image ───────────────────────────── -->
+    <div class="detail-section">
+      <p class="section-label">// 01 · Input — Stereo Camera</p>
+      <h2 class="section-heading"
+          data-en="Raw Stereo Image Pair"
+          data-ko="원시 스테레오 이미지 쌍">Raw Stereo Image Pair</h2>
+      <div class="section-body">
+        <p data-en="The perception pipeline begins with a calibrated stereo camera capturing synchronized left and right image pairs. This dual-camera setup provides the baseline separation needed for triangulation-based depth estimation, enabling the system to reconstruct 3D structure from 2D imagery without any additional active sensor."
+           data-ko="인식 파이프라인은 보정된 스테레오 카메라가 동기화된 좌우 이미지 쌍을 캡처하는 것으로 시작합니다. 이 이중 카메라 설정은 삼각측량 기반 깊이 추정에 필요한 기저 분리를 제공하여, 추가 능동 센서 없이 2D 영상에서 3D 구조물을 재구성할 수 있게 합니다.">
+          The perception pipeline begins with a calibrated stereo camera capturing synchronized left and right image pairs. This dual-camera setup provides the baseline separation needed for triangulation-based depth estimation, enabling the system to reconstruct 3D structure from 2D imagery without any additional active sensor.
+        </p>
+      </div>
+
+      <div class="media-block" style="margin-top: 28px;">
+        <div class="media-frame">
+          <video src="../assets/projects/visual-nav/01_stereo.mp4"
+                 autoplay muted loop playsinline preload="metadata"></video>
+        </div>
+        <p class="media-caption"
+           data-en="Raw stereo image pair — synchronized left and right camera frames from the stereo rig."
+           data-ko="원시 스테레오 이미지 쌍 — 스테레오 리그에서 동기화된 좌우 카메라 프레임.">
+          Raw stereo image pair — synchronized left and right camera frames from the stereo rig.
+        </p>
+      </div>
+
+      <div class="tech-highlight">
+        <strong>Tech Stack</strong>
+        Stereo Camera · ROS image_transport · Camera Calibration (OpenCV) · Synchronized Image Capture
+      </div>
+    </div>
+
+    <!-- ── Section 2: Rectified Image ───────────────────────── -->
+    <div class="detail-section">
+      <p class="section-label">// 02 · Processing — Image Rectification</p>
+      <h2 class="section-heading"
+          data-en="Stereo Rectification"
+          data-ko="스테레오 정류">Stereo Rectification</h2>
+      <div class="section-body">
+        <p data-en="Raw stereo images are first corrected for lens distortion and stereo misalignment through rectification. After rectification, corresponding points between the left and right images lie on the same horizontal scanline — a necessary prerequisite for efficient stereo matching. The rectified image pair is the input to the disparity computation stage."
+           data-ko="원시 스테레오 이미지는 먼저 정류를 통해 렌즈 왜곡과 스테레오 정렬 오류를 보정합니다. 정류 후, 좌우 이미지 간의 대응 포인트는 동일한 수평 스캔라인 위에 놓입니다 — 효율적인 스테레오 매칭을 위한 필수 전제 조건입니다. 정류된 이미지 쌍은 시차 계산 단계의 입력이 됩니다.">
+          Raw stereo images are first corrected for lens distortion and stereo misalignment through rectification. After rectification, corresponding points between the left and right images lie on the same horizontal scanline — a necessary prerequisite for efficient stereo matching. The rectified image pair is the input to the disparity computation stage.
+        </p>
+      </div>
+
+      <div class="media-block" style="margin-top: 28px;">
+        <div class="media-frame">
+          <video src="../assets/projects/visual-nav/02_image_rect.mp4"
+                 autoplay muted loop playsinline preload="metadata"></video>
+        </div>
+        <p class="media-caption"
+           data-en="Rectified stereo image — lens distortion corrected and epipolar lines aligned horizontally for stereo matching."
+           data-ko="정류된 스테레오 이미지 — 렌즈 왜곡 보정 및 스테레오 매칭을 위한 에피폴라 라인 수평 정렬.">
+          Rectified stereo image — lens distortion corrected and epipolar lines aligned horizontally for stereo matching.
+        </p>
+      </div>
+    </div>
+
+    <!-- ── Section 3: Disparity Map ──────────────────────────── -->
+    <div class="detail-section">
+      <p class="section-label">// 03 · Processing — Disparity Estimation</p>
+      <h2 class="section-heading"
+          data-en="Disparity Heatmap"
+          data-ko="시차 히트맵">Disparity Heatmap</h2>
+      <div class="section-body">
+        <p data-en="Stereo block matching is applied to the rectified image pair to compute a dense disparity map — measuring the horizontal pixel displacement between corresponding points in the left and right images. Disparity is inversely proportional to depth: high disparity (warm colors) indicates objects close to the camera, while low disparity (cool colors) indicates distant objects."
+           data-ko="정류된 이미지 쌍에 스테레오 블록 매칭을 적용하여 밀집 시차 맵을 계산합니다 — 좌우 이미지의 대응 포인트 간 수평 픽셀 변위를 측정합니다. 시차는 깊이에 반비례합니다: 높은 시차(따뜻한 색상)는 카메라에 가까운 물체를, 낮은 시차(차가운 색상)는 먼 물체를 나타냅니다.">
+          Stereo block matching is applied to the rectified image pair to compute a dense disparity map — measuring the horizontal pixel displacement between corresponding points in the left and right images. Disparity is inversely proportional to depth: high disparity (warm colors) indicates objects close to the camera, while low disparity (cool colors) indicates distant objects.
+        </p>
+      </div>
+
+      <div class="media-block" style="margin-top: 28px;">
+        <div class="media-frame">
+          <video src="../assets/projects/visual-nav/03_disparity.mp4"
+                 autoplay muted loop playsinline preload="metadata"></video>
+        </div>
+        <p class="media-caption"
+           data-en="Disparity heatmap — dense stereo matching result visualized as a color-coded depth map (warm = near, cool = far)."
+           data-ko="시차 히트맵 — 컬러 코딩된 깊이 맵으로 시각화된 밀집 스테레오 매칭 결과 (따뜻한 색 = 가까움, 차가운 색 = 멀리).">
+          Disparity heatmap — dense stereo matching result visualized as a color-coded depth map (warm = near, cool = far).
+        </p>
+      </div>
+
+      <div class="tech-highlight">
+        <strong>Tech Stack</strong>
+        Semi-Global Block Matching (SGBM) · OpenCV · ROS stereo_image_proc · WLS Filter (disparity refinement)
+      </div>
+    </div>
+
+    <!-- ── Section 4: Point Cloud ─────────────────────────────── -->
+    <div class="detail-section">
+      <p class="section-label">// 04 · Output — 3D Point Cloud</p>
+      <h2 class="section-heading"
+          data-en="Dense 3D Point Cloud"
+          data-ko="밀집 3D 포인트 클라우드">Dense 3D Point Cloud</h2>
+      <div class="section-body">
+        <p data-en="The disparity map is back-projected into 3D space using the stereo camera's calibrated parameters to produce a dense point cloud. Each pixel in the disparity image becomes a 3D point with known XYZ coordinates relative to the camera frame. This real-time 3D representation of the environment forms the core input for terrain-relative navigation and localization."
+           data-ko="시차 맵을 스테레오 카메라의 보정 파라미터를 사용하여 3D 공간으로 역투영하여 밀집 포인트 클라우드를 생성합니다. 시차 이미지의 각 픽셀은 카메라 프레임을 기준으로 알려진 XYZ 좌표를 가진 3D 포인트가 됩니다. 이 실시간 3D 환경 표현은 지형 상대 내비게이션 및 위치 추정의 핵심 입력을 형성합니다.">
+          The disparity map is back-projected into 3D space using the stereo camera's calibrated parameters to produce a dense point cloud. Each pixel in the disparity image becomes a 3D point with known XYZ coordinates relative to the camera frame. This real-time 3D representation of the environment forms the core input for terrain-relative navigation and localization.
+        </p>
+      </div>
+
+      <div class="media-block" style="margin-top: 28px;">
+        <div class="media-frame">
+          <video src="../assets/projects/visual-nav/04_pointcloud.mp4"
+                 autoplay muted loop playsinline preload="metadata"></video>
+        </div>
+        <p class="media-caption"
+           data-en="Dense 3D point cloud reconstructed from stereo disparity — real-time scene geometry for terrain-relative navigation."
+           data-ko="스테레오 시차로부터 재구성된 밀집 3D 포인트 클라우드 — 지형 상대 내비게이션을 위한 실시간 장면 기하학.">
+          Dense 3D point cloud reconstructed from stereo disparity — real-time scene geometry for terrain-relative navigation.
+        </p>
+      </div>
+
+      <div class="tech-highlight">
+        <strong>Tech Stack</strong>
+        Stereo Reprojection (Q-matrix) · PCL (Point Cloud Library) · ROS PointCloud2 · Real-time 3D Reconstruction
+      </div>
+    </div>
+
+    <!-- ── Section 5: Point Cloud 2 (Trimmed) ────────────────── -->
+    <div class="detail-section">
+      <p class="section-label">// 05 · Output — Filtered Point Cloud</p>
+      <h2 class="section-heading"
+          data-en="Point Cloud Filtering & Trimming"
+          data-ko="포인트 클라우드 필터링 및 트리밍">Point Cloud Filtering & Trimming</h2>
+      <div class="section-body">
+        <p data-en="The raw dense point cloud contains noise from stereo mismatches and out-of-range measurements. A statistical outlier removal filter is applied, followed by range-based trimming to retain only points within the relevant operational volume. The resulting filtered point cloud provides a cleaner, more reliable 3D map of the immediate environment — directly usable for obstacle avoidance and terrain matching."
+           data-ko="원시 밀집 포인트 클라우드에는 스테레오 불일치와 범위 외 측정에서 발생한 노이즈가 포함되어 있습니다. 통계적 이상치 제거 필터를 적용한 후, 관련 운용 볼륨 내의 포인트만 유지하는 범위 기반 트리밍을 수행합니다. 결과적으로 필터링된 포인트 클라우드는 장애물 회피와 지형 매칭에 직접 사용할 수 있는 주변 환경의 더 깔끔하고 신뢰할 수 있는 3D 맵을 제공합니다.">
+          The raw dense point cloud contains noise from stereo mismatches and out-of-range measurements. A statistical outlier removal filter is applied, followed by range-based trimming to retain only points within the relevant operational volume. The resulting filtered point cloud provides a cleaner, more reliable 3D map of the immediate environment — directly usable for obstacle avoidance and terrain matching.
+        </p>
+      </div>
+
+      <div class="media-block" style="margin-top: 28px;">
+        <div class="media-frame">
+          <video src="../assets/projects/visual-nav/05_pointcloud2.mp4"
+                 autoplay muted loop playsinline preload="metadata"></video>
+        </div>
+        <p class="media-caption"
+           data-en="Filtered point cloud — outlier-removed and range-trimmed 3D map for reliable terrain-relative localization."
+           data-ko="필터링된 포인트 클라우드 — 신뢰할 수 있는 지형 상대 위치 추정을 위한 이상치 제거 및 범위 트리밍된 3D 맵.">
+          Filtered point cloud — outlier-removed and range-trimmed 3D map for reliable terrain-relative localization.
+        </p>
+      </div>
+
+      <div class="tech-highlight">
+        <strong>Tech Stack</strong>
+        PCL StatisticalOutlierRemoval · PassThrough Filter · VoxelGrid Downsampling · ROS · Python / C++
+      </div>
+    </div>
+
+    <div class="detail-footer">
+      <span class="footer-logo">JP<span>.sys</span></span>
+      <a class="back-btn" href="../index.html#projects" style="position:static;"
+         data-en="← BACK TO PORTFOLIO" data-ko="← 포트폴리오로">← BACK TO PORTFOLIO</a>
+    </div>
+
+  </main>
+
+  <script>
+    (function () {
+      const saved = localStorage.getItem('lang') || 'en';
+      document.querySelectorAll('[data-en],[data-ko]').forEach(el => {
+        const val = el.getAttribute('data-' + saved);
+        if (val) el.textContent = val;
+      });
+    })();
+  </script>
+</body>
+</html>

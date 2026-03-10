@@ -334,7 +334,7 @@
         <div class="work-projects">
           <a class="proj-card" href="projects/mpc-gp-pathplanning.html" aria-label="MPC+GP Path Planning project detail">
             <div class="proj-card-media">
-              <video class="proj-video" src="assets/projects/mpc-gp/04 - 주행테스트.mp4" muted loop playsinline preload="metadata"></video>
+              <video class="proj-video" src="assets/projects/mpc-gp/main.mp4" muted loop playsinline preload="metadata"></video>
             </div>
             <div class="proj-card-body">
               <p class="proj-card-title" data-en="MPC + GP Path Planning" data-ko="MPC + GP 경로 계획">MPC + GP Path Planning</p>
@@ -350,7 +350,7 @@
 
           <a class="proj-card" href="projects/visual-navigation.html" aria-label="Visual Navigation project detail">
             <div class="proj-card-media">
-              <video class="proj-video" src="assets/projects/visual-nav/07 - visual navigation.mp4" muted loop playsinline preload="metadata"></video>
+              <video class="proj-video" src="assets/projects/visual-nav/04_pointcloud.mp4" muted loop playsinline preload="metadata"></video>
             </div>
             <div class="proj-card-body">
               <p class="proj-card-title" data-en="Visual Navigation" data-ko="비주얼 내비게이션">Visual Navigation</p>
@@ -857,6 +857,10 @@
       var video = card.querySelector('.proj-video');
       if (!video) return;
       var startTime = parseFloat(video.getAttribute('data-start') || '0');
+      // Show the correct frame as static thumbnail before hover
+      video.addEventListener('loadedmetadata', function() {
+        video.currentTime = startTime;
+      });
       card.addEventListener('mouseenter', function() {
         video.currentTime = startTime;
         video.play();

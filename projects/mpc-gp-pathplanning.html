@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="MPC + GP Path Planning — Jaejeong Park Project Detail" />
+  <title>MPC + GP Path Planning — Jaejeong Park</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg-primary:    #040810;
+      --bg-secondary:  #070e1a;
+      --bg-card:       #0a1525;
+      --cyan:          #00D4FF;
+      --amber:         #FFB300;
+      --green:         #00FF88;
+      --text-primary:  #E8F4F8;
+      --text-secondary:#6B8FA8;
+      --border:        rgba(0, 212, 255, 0.2);
+      --font-display:  'Bebas Neue', sans-serif;
+      --font-mono:     'JetBrains Mono', monospace;
+      --font-body:     'Barlow', sans-serif;
+      --transition:    0.3s ease;
+      --content-max:   860px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body { background: var(--bg-primary); color: var(--text-primary); font-family: var(--font-body); font-weight: 300; line-height: 1.7; overflow-x: hidden; }
+    a { color: var(--cyan); text-decoration: none; transition: color var(--transition); }
+    a:hover { color: #fff; }
+    img, video { max-width: 100%; display: block; }
+    ::selection { background: rgba(0, 212, 255, 0.3); color: #fff; }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg-secondary); }
+    ::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 2px; }
+
+    .back-btn {
+      position: fixed; top: 20px; right: 28px; z-index: 1000;
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 18px;
+      background: rgba(4, 8, 16, 0.88); backdrop-filter: blur(12px);
+      border: 1px solid var(--border); border-radius: 2px;
+      font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary);
+      letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer;
+      transition: border-color var(--transition), color var(--transition), background var(--transition);
+    }
+    .back-btn:hover { border-color: var(--cyan); color: var(--cyan); background: rgba(0, 212, 255, 0.05); }
+    .back-btn svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+
+    .detail-page { max-width: var(--content-max); margin: 0 auto; padding: 100px 32px 80px; }
+
+    .detail-label { font-family: var(--font-mono); font-size: 11px; color: var(--cyan); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+    .detail-title { font-family: var(--font-display); font-size: clamp(2rem, 6vw, 3.4rem); color: var(--text-primary); letter-spacing: 2px; line-height: 1.1; margin-bottom: 16px; }
+    .detail-subtitle { font-size: 1rem; color: var(--text-secondary); margin-bottom: 28px; }
+    .detail-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 40px; }
+    .meta-tag { font-family: var(--font-mono); font-size: 10px; color: var(--cyan); border: 1px solid var(--border); padding: 4px 10px; letter-spacing: 1px; text-transform: uppercase; }
+    .meta-tag.amber { color: var(--amber); border-color: rgba(255, 179, 0, 0.3); }
+    .detail-divider { width: 100%; height: 1px; background: var(--border); margin-bottom: 48px; }
+
+    .detail-section { margin-bottom: 64px; }
+    .section-label { font-family: var(--font-mono); font-size: 10px; color: var(--cyan); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+    .section-heading { font-family: var(--font-display); font-size: 1.5rem; color: var(--text-primary); letter-spacing: 1.5px; margin-bottom: 20px; }
+    .section-body { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.8; }
+    .section-body p + p { margin-top: 14px; }
+
+    .media-block { margin-bottom: 48px; }
+    .media-frame { position: relative; border: 1px solid var(--border); border-radius: 2px; overflow: hidden; background: var(--bg-card); }
+    .media-frame::before { content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 1; box-shadow: inset 0 0 0 1px rgba(0, 212, 255, 0.08); }
+    .media-frame video, .media-frame img { width: 100%; display: block; }
+    .media-frame::after { content: ''; position: absolute; top: 6px; left: 6px; width: 14px; height: 14px; border-top: 1px solid var(--cyan); border-left: 1px solid var(--cyan); pointer-events: none; z-index: 2; }
+    .media-caption { margin-top: 12px; font-family: var(--font-mono); font-size: 10px; color: var(--text-secondary); letter-spacing: 1px; display: flex; align-items: flex-start; gap: 8px; }
+    .media-caption::before { content: '//'; color: var(--cyan); flex-shrink: 0; }
+
+    .media-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    .tech-highlight { background: var(--bg-card); border: 1px solid var(--border); border-left: 3px solid var(--cyan); padding: 20px 24px; margin-top: 24px; font-family: var(--font-mono); font-size: 0.82rem; color: var(--text-secondary); line-height: 1.7; }
+    .tech-highlight strong { color: var(--cyan); display: block; margin-bottom: 6px; font-size: 0.78rem; letter-spacing: 1px; text-transform: uppercase; }
+
+    .detail-footer { border-top: 1px solid var(--border); padding-top: 32px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    .footer-logo { font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); letter-spacing: 2px; }
+    .footer-logo span { color: var(--cyan); }
+
+    @media (max-width: 600px) {
+      .detail-page { padding: 88px 20px 60px; }
+      .media-grid-2 { grid-template-columns: 1fr; }
+      .back-btn { right: 16px; top: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <a class="back-btn" href="../index.html#projects" aria-label="Back to portfolio">
+    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    <span data-en="BACK" data-ko="돌아가기">BACK</span>
+  </a>
+
+  <main class="detail-page">
+
+    <p class="detail-label">// Project Detail — Hancom InSpace Co., Ltd. · Feb 2021 – Dec 2021</p>
+    <h1 class="detail-title">MPC + Gaussian Process<br>Path Planning</h1>
+    <p class="detail-subtitle"
+       data-en="Adaptive autonomous path planning combining Model Predictive Control with Gaussian Process regression — enabling a ground robot to navigate complex tracks with real-time obstacle-aware trajectory optimization."
+       data-ko="모델 예측 제어와 가우시안 프로세스 회귀를 결합한 적응형 자율 경로 계획 — 복잡한 트랙을 실시간 장애물 인식 궤적 최적화로 주행하는 지상 로봇 구현.">
+      Adaptive autonomous path planning combining Model Predictive Control with Gaussian Process regression — enabling a ground robot to navigate complex tracks with real-time obstacle-aware trajectory optimization.
+    </p>
+    <div class="detail-meta">
+      <span class="meta-tag">MPC</span>
+      <span class="meta-tag">Gaussian Process</span>
+      <span class="meta-tag">ROS</span>
+      <span class="meta-tag">Gazebo</span>
+      <span class="meta-tag">Python</span>
+      <span class="meta-tag amber">Hancom InSpace · 2021</span>
+    </div>
+    <div class="detail-divider"></div>
+
+    <!-- ── Section 1: Simulation Result ─────────────────────── -->
+    <div class="detail-section">
+      <p class="section-label">// 01 · System Overview</p>
+      <h2 class="section-heading"
+          data-en="Full Simulation Result"
+          data-ko="전체 시뮬레이션 결과">Full Simulation Result</h2>
+      <div class="section-body">
+        <p data-en="The system combines MPC for short-horizon trajectory optimization with Gaussian Process (GP) regression to model and predict terrain or path uncertainty. The GP component learns a probabilistic model of the path from prior experience, providing uncertainty estimates that allow the MPC to plan more conservative or aggressive trajectories depending on confidence level."
+           data-ko="시스템은 단기 궤적 최적화를 위한 MPC와 지형 또는 경로 불확실성을 모델링·예측하기 위한 가우시안 프로세스(GP) 회귀를 결합합니다. GP 구성 요소는 이전 경험으로부터 경로의 확률론적 모델을 학습하여 신뢰 수준에 따라 MPC가 더 보수적이거나 공격적인 궤적을 계획하도록 불확실성 추정치를 제공합니다.">
+          The system combines MPC for short-horizon trajectory optimization with Gaussian Process (GP) regression to model and predict terrain or path uncertainty. The GP component learns a probabilistic model of the path from prior experience, providing uncertainty estimates that allow the MPC to plan more conservative or aggressive trajectories depending on confidence level.
+        </p>
+        <p data-en="The full pipeline was implemented and validated in Gazebo simulation with a differential-drive ground robot navigating a structured track environment."
+           data-ko="전체 파이프라인은 구조화된 트랙 환경을 주행하는 차동 구동 지상 로봇으로 Gazebo 시뮬레이션에서 구현 및 검증됐습니다.">
+          The full pipeline was implemented and validated in Gazebo simulation with a differential-drive ground robot navigating a structured track environment.
+        </p>
+      </div>
+
+      <div class="media-block" style="margin-top: 28px;">
+        <div class="media-frame">
+          <video src="../assets/projects/mpc-gp/main.mp4"
+                 autoplay muted loop playsinline preload="metadata"></video>
+        </div>
+        <p class="media-caption"
+           data-en="Full simulation result — MPC+GP path planning on autonomous ground robot navigating a structured track."
+           data-ko="전체 시뮬레이션 결과 — 구조화된 트랙을 주행하는 자율 지상 로봇의 MPC+GP 경로 계획.">
+          Full simulation result — MPC+GP path planning on autonomous ground robot navigating a structured track.
+        </p>
+      </div>
+
+      <div class="tech-highlight">
+        <strong>Tech Stack</strong>
+        MPC (Model Predictive Control) · Gaussian Process Regression · ROS · Gazebo · Python · CasADi / scipy optimize
+      </div>
+    </div>
+
+    <!-- ── Section 2: Step 1 ─────────────────────────────────── -->
+    <div class="detail-section">
+      <p class="section-label">// 02 · Algorithm Step 1</p>
+      <h2 class="section-heading"
+          data-en="Track Environment & Problem Setup"
+          data-ko="트랙 환경 및 문제 설정">Track Environment & Problem Setup</h2>
+      <div class="section-body">
+        <p data-en="The first step defines the navigation environment: a structured track with boundaries and a reference centerline. The robot must stay within track limits while following the centerline as closely as possible. The reference path is sampled at discrete waypoints to form the MPC's tracking target over the prediction horizon."
+           data-ko="첫 번째 단계는 내비게이션 환경을 정의합니다: 경계와 기준 중심선이 있는 구조화된 트랙. 로봇은 트랙 경계 내에 머물면서 중심선을 최대한 정확하게 따라야 합니다. 기준 경로는 MPC의 예측 구간에 걸친 추적 목표를 형성하기 위해 이산 웨이포인트로 샘플링됩니다.">
+          The first step defines the navigation environment: a structured track with boundaries and a reference centerline. The robot must stay within track limits while following the centerline as closely as possible. The reference path is sampled at discrete waypoints to form the MPC's tracking target over the prediction horizon.
+        </p>
+      </div>
+
+      <div class="media-block" style="margin-top: 28px;">
+        <div class="media-frame">
+          <img src="../assets/projects/mpc-gp/step_1.png"
+               alt="Track environment and reference path setup" />
+        </div>
+        <p class="media-caption"
+           data-en="Step 1 — track environment definition with reference centerline and boundary constraints."
+           data-ko="Step 1 — 기준 중심선과 경계 제약 조건이 있는 트랙 환경 정의.">
+          Step 1 — track environment definition with reference centerline and boundary constraints.
+        </p>
+      </div>
+    </div>
+
+    <!-- ── Section 3: Step 2 ─────────────────────────────────── -->
+    <div class="detail-section">
+      <p class="section-label">// 03 · Algorithm Step 2</p>
+      <h2 class="section-heading"
+          data-en="Gaussian Process Path Modeling"
+          data-ko="가우시안 프로세스 경로 모델링">Gaussian Process Path Modeling</h2>
+      <div class="section-body">
+        <p data-en="A Gaussian Process is fitted to the reference path to provide a smooth, continuous, and probabilistic representation of the desired trajectory. The GP outputs both a mean prediction (expected path position) and a variance estimate (uncertainty) at any query point — enabling the MPC to account for path modeling error in its optimization."
+           data-ko="원하는 궤적의 매끄럽고 연속적인 확률론적 표현을 제공하기 위해 기준 경로에 가우시안 프로세스를 피팅합니다. GP는 임의의 쿼리 지점에서 평균 예측(예상 경로 위치)과 분산 추정치(불확실성)를 모두 출력하여 MPC가 최적화에서 경로 모델링 오류를 고려할 수 있게 합니다.">
+          A Gaussian Process is fitted to the reference path to provide a smooth, continuous, and probabilistic representation of the desired trajectory. The GP outputs both a mean prediction (expected path position) and a variance estimate (uncertainty) at any query point — enabling the MPC to account for path modeling error in its optimization.
+        </p>
+      </div>
+
+      <div class="media-block" style="margin-top: 28px;">
+        <div class="media-frame">
+          <img src="../assets/projects/mpc-gp/step_2.png"
+               alt="Gaussian Process path modeling with mean and variance" />
+        </div>
+        <p class="media-caption"
+           data-en="Step 2 — GP regression on reference path, showing mean prediction and confidence interval (±2σ)."
+           data-ko="Step 2 — 기준 경로에 대한 GP 회귀, 평균 예측 및 신뢰 구간(±2σ) 표시.">
+          Step 2 — GP regression on reference path, showing mean prediction and confidence interval (±2σ).
+        </p>
+      </div>
+
+      <div class="tech-highlight">
+        <strong>Tech Stack</strong>
+        Gaussian Process Regression (GPy / scikit-learn) · RBF Kernel · Hyperparameter Optimization (MLE)
+      </div>
+    </div>
+
+    <!-- ── Section 4: Step 3 ─────────────────────────────────── -->
+    <div class="detail-section">
+      <p class="section-label">// 04 · Algorithm Step 3</p>
+      <h2 class="section-heading"
+          data-en="MPC Trajectory Optimization"
+          data-ko="MPC 궤적 최적화">MPC Trajectory Optimization</h2>
+      <div class="section-body">
+        <p data-en="The MPC formulates a finite-horizon optimal control problem at each timestep: given the robot's current state, minimize a cost function that penalizes deviation from the GP mean path while satisfying track boundary constraints. The optimization is solved in real time using a nonlinear solver, producing a sequence of control inputs of which only the first is applied (receding horizon principle)."
+           data-ko="MPC는 각 타임스텝에서 유한 구간 최적 제어 문제를 공식화합니다: 로봇의 현재 상태를 주어진 조건으로, 트랙 경계 제약 조건을 만족하면서 GP 평균 경로로부터의 편차를 최소화하는 비용 함수를 최소화합니다. 비선형 솔버를 사용하여 실시간으로 최적화를 풀어 제어 입력 시퀀스를 생성하며, 첫 번째 입력만 적용합니다(후퇴 구간 원리).">
+          The MPC formulates a finite-horizon optimal control problem at each timestep: given the robot's current state, minimize a cost function that penalizes deviation from the GP mean path while satisfying track boundary constraints. The optimization is solved in real time using a nonlinear solver, producing a sequence of control inputs of which only the first is applied (receding horizon principle).
+        </p>
+      </div>
+
+      <div class="media-block" style="margin-top: 28px;">
+        <div class="media-frame">
+          <img src="../assets/projects/mpc-gp/step_3.png"
+               alt="MPC trajectory optimization with prediction horizon" />
+        </div>
+        <p class="media-caption"
+           data-en="Step 3 — MPC optimization result showing predicted trajectory over the planning horizon against GP reference."
+           data-ko="Step 3 — GP 기준 경로 대비 계획 구간에 걸친 예측 궤적을 보여주는 MPC 최적화 결과.">
+          Step 3 — MPC optimization result showing predicted trajectory over the planning horizon against GP reference.
+        </p>
+      </div>
+
+      <div class="tech-highlight">
+        <strong>Tech Stack</strong>
+        MPC (Receding Horizon Control) · CasADi / IPOPT Solver · State Constraints · Kinematic Bicycle Model
+      </div>
+    </div>
+
+    <!-- ── Section 5: Step 4 ─────────────────────────────────── -->
+    <div class="detail-section">
+      <p class="section-label">// 05 · Algorithm Step 4</p>
+      <h2 class="section-heading"
+          data-en="Closed-Loop Execution & Result"
+          data-ko="폐루프 실행 및 결과">Closed-Loop Execution & Result</h2>
+      <div class="section-body">
+        <p data-en="The closed-loop system runs the MPC+GP pipeline at each control cycle: the robot's measured state is fed back to the optimizer, the GP provides updated path predictions at the robot's current position, and the MPC recomputes optimal control inputs. The result is smooth, stable track following that adapts to the robot's actual position even under disturbances."
+           data-ko="폐루프 시스템은 각 제어 사이클마다 MPC+GP 파이프라인을 실행합니다: 로봇의 측정 상태가 최적화기에 피드백되고, GP가 로봇의 현재 위치에서 업데이트된 경로 예측을 제공하며, MPC가 최적 제어 입력을 재계산합니다. 결과는 외란 하에서도 로봇의 실제 위치에 적응하는 매끄럽고 안정적인 트랙 추종입니다.">
+          The closed-loop system runs the MPC+GP pipeline at each control cycle: the robot's measured state is fed back to the optimizer, the GP provides updated path predictions at the robot's current position, and the MPC recomputes optimal control inputs. The result is smooth, stable track following that adapts to the robot's actual position even under disturbances.
+        </p>
+      </div>
+
+      <div class="media-block" style="margin-top: 28px;">
+        <div class="media-frame">
+          <img src="../assets/projects/mpc-gp/step_4.png"
+               alt="Closed-loop execution result: robot trajectory vs reference path" />
+        </div>
+        <p class="media-caption"
+           data-en="Step 4 — closed-loop execution result: actual robot trajectory (cyan) vs GP reference path across the full track."
+           data-ko="Step 4 — 폐루프 실행 결과: 전체 트랙에서 실제 로봇 궤적(시안)과 GP 기준 경로 비교.">
+          Step 4 — closed-loop execution result: actual robot trajectory (cyan) vs GP reference path across the full track.
+        </p>
+      </div>
+    </div>
+
+    <div class="detail-footer">
+      <span class="footer-logo">JP<span>.sys</span></span>
+      <a class="back-btn" href="../index.html#projects" style="position:static;"
+         data-en="← BACK TO PORTFOLIO" data-ko="← 포트폴리오로">← BACK TO PORTFOLIO</a>
+    </div>
+
+  </main>
+
+  <script>
+    (function () {
+      const saved = localStorage.getItem('lang') || 'en';
+      document.querySelectorAll('[data-en],[data-ko]').forEach(el => {
+        const val = el.getAttribute('data-' + saved);
+        if (val) el.textContent = val;
+      });
+    })();
+  </script>
+</body>
+</html>
